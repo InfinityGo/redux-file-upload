@@ -4,7 +4,7 @@
 There aren't any simple yet customizable file uploader packages that would work nicely with Redux. redux-file-upload is here to fill the gap!
 
 # Install
-`npm install --save redux-file-upload`
+`npm install https://github.com/InfinityGo/redux-file-upload.git`
 
 Please note - a middleware that passes `dispatch` to actions, e.g. redux-thunk, redux-promise-middleware, is required for this package to work properly.
 
