@@ -57,7 +57,7 @@ import { FileUpload } from 'redux-file-upload'
   dropzoneId="fileUpload"
   url="https:/url.org/api/docs/upload"
 >
-  <button>
+  <button type="submit">
     Click or drag here
   </button>
 </FileUpload>

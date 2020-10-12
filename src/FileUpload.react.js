@@ -77,14 +77,7 @@ export default class FileUpload extends Component {
   @autobind
   async handleFileChange(event) {
     const {
-      addUploadingDocs,
-      addUploadingImages,
       allowedFileTypes,
-      data,
-      dropzoneId,
-      identifier,
-      uploadFiles,
-      url
      } = this.props;
 
     const { dragCount } = this.state;
@@ -95,8 +88,24 @@ export default class FileUpload extends Component {
     const allowedFiles = !!allowedFileTypes ? await filterAllowedFiles(event, allowedFileTypes) : event;
     const imageFiles = await filterImageFiles(allowedFiles);
     const docFiles = await filterDocFiles(allowedFiles);
-    const id = identifier || dropzoneId;
+    this.setState({ imageFiles: imageFiles, docFiles: docFiles});
+  }
 
+  @autobind
+  async handleSubmit(event) {
+    const {
+      addUploadingDocs,
+      addUploadingImages,
+      data,
+      dropzoneId,
+      identifier,
+      uploadFiles,
+      url
+    } = this.props;
+
+    //const { imageFiles, docFiles } = this.state;
+
+    const id = identifier || dropzoneId;
     if (!!imageFiles.length) {
       addUploadingImages(id, imageFiles);
       uploadFiles(id, url, imageFiles, 'image', data);
@@ -127,21 +136,34 @@ export default class FileUpload extends Component {
 
   render() {
     const { children, className, dropzoneActiveStyle, dropzoneId, dropzoneStyle, multiple } = this.props;
-    const { dropzoneActive } = this.state;
+    const { dropzoneActive, imageFiles, docFiles } = this.state;
 
     return (
       <div className={className}>
-        <form ref="fileUpload">
-          <label style={[dropzoneStyle || styles.dropzone.base, dropzoneActive && (dropzoneActiveStyle || styles.dropzone.active)]}>
-            <input
-              id={dropzoneId}
-              multiple={multiple}
-              ref="fileInput"
-              style={styles.input}
-              type="file"
-            />
-            {children}
-          </label>
+        <form ref="fileUpload" onSubmit={this.handleSubmit}>
+        <table>
+          <tr>
+            <td>Select File :</td>
+          </tr>
+          <tr>
+            <td>
+              <label style={[dropzoneStyle || styles.dropzone.base, dropzoneActive && (dropzoneActiveStyle || styles.dropzone.active)]}>
+                <input
+                  id={dropzoneId}
+                  multiple={multiple}
+                  ref="fileInput"
+                  style={styles.input}
+                  type="file"
+                />
+              </label>
+            </td>
+            <tr>
+              <td>
+                {children}
+              </td>
+            </tr>
+          </tr>
+        </table>
         </form>
       </div>
     );
